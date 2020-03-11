@@ -1,16 +1,16 @@
-﻿using System;
+﻿using RoyalGameOfUr.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace RoyalGameOfUr.Server
 {
-    public class Client
+    public class Client : ClientBase
     {
         public readonly int Id;
         public readonly int PortNumber;
         public readonly string Ip;
 
-        public string Username { get; set; }
         public ClientStatus Status { get; set; }
 
         public Client(int id, string username, ClientStatus status = ClientStatus.Connected)
@@ -20,7 +20,7 @@ namespace RoyalGameOfUr.Server
             => $"Client[id: {Id}, username: {Username}, status: {Status}, ip: {Ip}, port: {PortNumber}]";
 
         public override bool Equals(object obj)
-            => obj is Client client ? (client.Ip, client.PortNumber) == (Ip, PortNumber) : false;
+            => obj is Client client && (client.Ip, client.PortNumber) == (Ip, PortNumber);
 
         public override int GetHashCode()
             => new { Ip, PortNumber }.GetHashCode();
