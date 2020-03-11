@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RoyalGameOfUr.Server.Exceptions
 {
-    class ClientAlreadyExistsException : Exception
+    public class ClientAlreadyExistsException : Exception
     {
         public ClientAlreadyExistsException(string message) : base(message)
         {

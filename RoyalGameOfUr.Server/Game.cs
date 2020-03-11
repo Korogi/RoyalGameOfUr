@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RoyalGameOfUr.Server
 {
-    class Game
+    public class Game
     {
         private Client _black; 
         public Client Black
@@ -18,16 +18,16 @@ namespace RoyalGameOfUr.Server
             get => _white;
             set => _white = value;
         }
-        private ClientContainer _subscribers;
+        private ClientService _subscribers;
         private bool _isFinished = false;
 
-        public Game(Client black, Client white)
+        public Game(Client blackPlayer, Client whitePlayer)
         {
-            this._black = black;
-            this._white = white;
-            this._subscribers = new ClientContainer();
-            this._subscribers.AddClient(black);
-            this._subscribers.AddClient(white);
+            this._black = blackPlayer;
+            this._white = whitePlayer;
+            this._subscribers = new ClientService();
+            this._subscribers.AddClient(blackPlayer);
+            this._subscribers.AddClient(whitePlayer);
         }
 
         public void AddSpectator(Client client)
@@ -49,7 +49,5 @@ namespace RoyalGameOfUr.Server
         {
 
         }
-
-
     }
 }

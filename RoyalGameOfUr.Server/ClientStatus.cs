@@ -4,10 +4,10 @@ using System.Text;
 
 namespace RoyalGameOfUr.Server
 {
-    enum ClientStatus
+    public enum ClientStatus
     {
-        connected, 
-        currentlyPlaying, 
-        currentlySpectating,
+        Connected, 
+        CurrentlyPlaying, 
+        CurrentlySpectating,
     }
 }

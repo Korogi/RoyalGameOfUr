@@ -4,65 +4,25 @@ using System.Text;
 
 namespace RoyalGameOfUr.Server
 {
-    class Client
+    public class Client
     {
-        private readonly int _ID;
-        public int Id 
-        { 
-            get => _ID; 
-        }
-        private int _portNumber;
-        public int PortNumber
-        {
-            get => _portNumber;
-        }
+        public readonly int Id;
+        public readonly int PortNumber;
+        public readonly string Ip;
 
-        private string _IP;
-        public string Ip
-        {
-            get => _IP;
-        }
+        public string Username { get; set; }
+        public ClientStatus Status { get; set; }
 
-        private String _username;
-        public String Username 
-        { 
-            get => _username; 
-            set => _username = value; 
-        }
-    
-        private ClientStatus _status;
-        public ClientStatus Status
-        {
-            get => _status;
-            set => _status = value;
-        }
-
-
-        public Client(int ID, String username, ClientStatus status = ClientStatus.connected)
-        {
-            this._ID = ID;
-            this._username = username;
-            this._status = status;
-        }
+        public Client(int id, string username, ClientStatus status = ClientStatus.Connected)
+            => (Id, Username, Status) = (id, username, status);
 
         public override string ToString()
-        {
-            return $"Client[id: {_ID}, username: {_username}, status: {_status}]";
-        }
+            => $"Client[id: {Id}, username: {Username}, status: {Status}, ip: {Ip}, port: {PortNumber}]";
 
         public override bool Equals(object obj)
-        {
-            var client = obj as Client; 
-            if (client == null)
-            {
-                return false;
-            }
-            return client.Ip == _IP && client.PortNumber == _portNumber;
-        }
+            => obj is Client client ? (client.Ip, client.PortNumber) == (Ip, PortNumber) : false;
 
         public override int GetHashCode()
-        {
-            return new { _ID, _portNumber }.GetHashCode();
-        }
+            => new { Ip, PortNumber }.GetHashCode();
     }
 }
