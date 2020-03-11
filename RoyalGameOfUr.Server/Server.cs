@@ -6,7 +6,7 @@ namespace RoyalGameOfUr.Server
 {
     class Server
     {
-        private ClientService _connectedClients;
+        private ClientContainer _connectedClients;
 
 
     }

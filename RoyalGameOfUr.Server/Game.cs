@@ -18,14 +18,14 @@ namespace RoyalGameOfUr.Server
             get => _white;
             set => _white = value;
         }
-        private ClientService _subscribers;
+        private ClientContainer _subscribers;
         private bool _isFinished = false;
 
         public Game(Client blackPlayer, Client whitePlayer)
         {
             this._black = blackPlayer;
             this._white = whitePlayer;
-            this._subscribers = new ClientService();
+            this._subscribers = new ClientContainer();
             this._subscribers.AddClient(blackPlayer);
             this._subscribers.AddClient(whitePlayer);
         }

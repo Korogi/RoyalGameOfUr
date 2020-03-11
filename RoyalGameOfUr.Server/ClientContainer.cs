@@ -7,11 +7,11 @@ using System.Text;
 
 namespace RoyalGameOfUr.Server
 {
-    public class ClientService : IEnumerable
+    public class ClientContainer : IEnumerable
     {
         private readonly Dictionary<int, Client> _clients;
 
-        public ClientService()
+        public ClientContainer()
         {
             _clients = new Dictionary<int, Client>();
         }
