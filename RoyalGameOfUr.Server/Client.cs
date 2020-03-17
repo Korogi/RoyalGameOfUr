@@ -10,11 +10,18 @@ namespace RoyalGameOfUr.Server
         public readonly int Id;
         public readonly int PortNumber;
         public readonly string Ip;
+        public int Score { get; set; }
+        public PlayerType PlayerType { get; set; }
 
         public ClientStatus Status { get; set; }
 
         public Client(int id, string username, ClientStatus status = ClientStatus.Connected)
             => (Id, Username, Status) = (id, username, status);
+
+        public void SendDataToClient<T>(T data)
+        {
+
+        }
 
         public override string ToString()
             => $"Client[id: {Id}, username: {Username}, status: {Status}, ip: {Ip}, port: {PortNumber}]";

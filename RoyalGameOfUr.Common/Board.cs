@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,26 +7,41 @@ namespace RoyalGameOfUr.Common
 {
     public class Board
     {
-        public List<int> WhitePlayerStonePositions { get; set; }
-        public List<int> BlackPlayerStonePositions { get; set; }
+        public List<Stone> WhitePlayerStones { get; set; }
+        public List<Stone> BlackPlayerStones { get; set; }
+        public List<Square> Squares { get; set; }
 
-        public List<Square> Squares = new List<Square>
+        public Board()
         {
-            new Square(id: 0, order: 0, SquareType.OnlyOccupiableByWhitePlayer),
-            new Square(id: 1, order: 1, SquareType.OnlyOccupiableByWhitePlayer),
+            this.Squares = new List<Square>();
+            int currentId = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                Squares.Add(new Square(id: currentId++, order: i, SquareType.OnlyOccupiableByWhitePlayer)); 
+            }
 
-            new Square(id: 2, order: 0, SquareType.OnlyOccupiableByBlackPlayer),
-            new Square(id: 3, order: 1, SquareType.OnlyOccupiableByBlackPlayer),
+            for (int i = 0; i < 4; i++)
+            {
+                Squares.Add(new Square(id: currentId++, order: i, SquareType.OnlyOccupiableByBlackPlayer));
+            }
 
-            new Square(id: 4, order: 2, SquareType.SafeOccupiableByBothPlayers),
-            new Square(id: 5, order: 3, SquareType.SafeOccupiableByBothPlayers),
-            new Square(id: 6, order: 4, SquareType.SafeOccupiableByBothPlayers),
-            new Square(id: 7, order: 5, SquareType.SafeOccupiableByBothPlayers),
-            new Square(id: 8, order: 6, SquareType.SafeOccupiableByBothPlayers),
-            new Square(id: 9, order: 7, SquareType.SafeOccupiableByBothPlayers),
-            new Square(id: 10, order: 8, SquareType.SafeOccupiableByBothPlayers),
-            new Square(id: 11, order: 9, SquareType.SafeOccupiableByBothPlayers)
-            //TODO: continue
-        };
+            for (int i = 0; i < 8; i++)
+            {
+                Squares.Add(new Square(id: currentId++, order: i + 4, SquareType.UnsafeOccupiableByBothPlayers));
+            }
+
+            Squares.Add(new Square(id: currentId++, order: 12, SquareType.OnlyOccupiableByWhitePlayer));
+            Squares.Add(new Square(id: currentId++, order: 13, SquareType.OnlyOccupiableByWhitePlayer));
+
+            Squares.Add(new Square(id: currentId++, order: 12, SquareType.OnlyOccupiableByBlackPlayer));
+            Squares.Add(new Square(id: currentId++, order: 13, SquareType.OnlyOccupiableByBlackPlayer));
+        }
+
+        public Square GetSquareByOrder(int order)
+            => Squares.Where(square => square.Order == order).DefaultIfEmpty().First();
+
+        public Square GetSquarebyId(int id)
+            => Squares.Where(square => square.Id == id).DefaultIfEmpty().First();
+
     }
 }

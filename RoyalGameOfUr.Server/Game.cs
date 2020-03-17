@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RoyalGameOfUr.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,48 +7,41 @@ namespace RoyalGameOfUr.Server
 {
     public class Game
     {
-        private Client _black; 
-        public Client Black
-        {
-            get => _black;
-            set => _black = value;
-        }
-        private Client _white; 
-        public Client White
-        {
-            get => _white;
-            set => _white = value;
-        }
-        private ClientContainer _subscribers;
-        private bool _isFinished = false;
+        public Client BlackPlayer { get; set; }
+        public Client WhitePlayer { get; set; }
+        public ClientContainer Subscribers { get; private set; }
+        private bool IsFinished { get; set; }
+        public Client CurrentPlayer { get; set; }
+        public Board Board { get; private set; }
 
         public Game(Client blackPlayer, Client whitePlayer)
         {
-            this._black = blackPlayer;
-            this._white = whitePlayer;
-            this._subscribers = new ClientContainer();
-            this._subscribers.AddClient(blackPlayer);
-            this._subscribers.AddClient(whitePlayer);
+            this.BlackPlayer = blackPlayer;
+            this.WhitePlayer = whitePlayer;
+            BlackPlayer.PlayerType = PlayerType.Black;
+            WhitePlayer.PlayerType = PlayerType.White;
+
+            this.Subscribers = new ClientContainer();
+
+            this.Subscribers.AddClient(blackPlayer);
+            this.Subscribers.AddClient(whitePlayer);
+
+            Board = new Board();
         }
 
         public void AddSpectator(Client client)
         {
-            this._subscribers.AddClient(client);
+            this.Subscribers.AddClient(client);
         }
 
         public void DeleteSpectatorById(int id)
         {
-            this._subscribers.DeleteClientById(id);
-        }
-           
-        public void PlayGame()
-        {
-
+            this.Subscribers.DeleteClientById(id);
         }
 
-        public void Update()
+        public void Run()
         {
-
+            // new GameHandler(this);
         }
     }
 }

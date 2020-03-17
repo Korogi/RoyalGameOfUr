@@ -21,7 +21,6 @@ namespace RoyalGameOfUr.Server
                     ? client 
                     : throw new ClientNotFoundException($"Client with ID {id} that you tried to get by ID could not be found.");
  
-
         public void AddClient(Client client)
         {
             if (!_clients.TryAdd(client.Id, client))
