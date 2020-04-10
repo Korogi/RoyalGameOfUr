@@ -28,13 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.btnConnect = new System.Windows.Forms.Button();
+            this.btnSend = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(265, 150);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(187, 67);
+            this.btnConnect.TabIndex = 0;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
+            // btnSend
+            // 
+            this.btnSend.Location = new System.Drawing.Point(296, 223);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(125, 50);
+            this.btnSend.TabIndex = 1;
+            this.btnSend.Text = "Send";
+            this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnSend);
+            this.Controls.Add(this.btnConnect);
+            this.Name = "Form1";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Button btnSend;
     }
 }
 

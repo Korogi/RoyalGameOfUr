@@ -18,8 +18,6 @@ namespace RoyalGameOfUr.Server
         {
             this.BlackPlayer = blackPlayer;
             this.WhitePlayer = whitePlayer;
-            BlackPlayer.PlayerType = PlayerType.Black;
-            WhitePlayer.PlayerType = PlayerType.White;
 
             this.Subscribers = new ClientContainer();
 

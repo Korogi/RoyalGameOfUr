@@ -11,6 +11,7 @@ namespace RoyalGameOfUr.Common
         public List<Stone> BlackPlayerStones { get; set; }
         public List<Square> Squares { get; set; }
 
+
         public Board()
         {
             this.Squares = new List<Square>();
@@ -35,10 +36,12 @@ namespace RoyalGameOfUr.Common
 
             Squares.Add(new Square(id: currentId++, order: 12, SquareType.OnlyOccupiableByBlackPlayer));
             Squares.Add(new Square(id: currentId++, order: 13, SquareType.OnlyOccupiableByBlackPlayer));
+            Squares.Add(new Square(id: currentId++, order: 14, SquareType.WinningSquare));
         }
 
         public Square GetSquareByOrder(int order)
-            => Squares.Where(square => square.Order == order).DefaultIfEmpty().First();
+            => Squares.Where(square => square.Order == order)
+                      .DefaultIfEmpty(new Square(-1, -1, SquareType.InaccessibleSquare)).First();
 
         public Square GetSquarebyId(int id)
             => Squares.Where(square => square.Id == id).DefaultIfEmpty().First();

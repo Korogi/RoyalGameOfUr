@@ -9,6 +9,8 @@ namespace RoyalGameOfUr.Common
         OnlyOccupiableByBlackPlayer,
         OnlyOccupiableByWhitePlayer,
         UnsafeOccupiableByBothPlayers,
-        SafeOccupiableByBothPlayers
+        SafeOccupiableByBothPlayers, 
+        WinningSquare,
+        InaccessibleSquare
     }
 }

@@ -20,17 +20,18 @@ namespace RoyalGameOfUr.Server
         {
 
             bool IsValidMove() =>  false;
-            bool IsSquareOccupiable() => Game.Board.GetSquareByOrder(stoneToMove.Order + stepsToMove) is null;
+            bool IsSquareOccupiable() 
+                => Game.Board.GetSquareByOrder(stoneToMove.Order + stepsToMove).Type != SquareType.InaccessibleSquare;
         }
 
         public int RollDice()
         {
-            var pool = Enumerable.Repeat(0, 1).Concat(Enumerable.Repeat(1, 4)
+            var poolOfPossibleOutcomes = Enumerable.Repeat(0, 1).Concat(Enumerable.Repeat(1, 4)
                                               .Concat(Enumerable.Repeat(2, 6)
                                               .Concat(Enumerable.Repeat(3, 4)
                                               .Concat(Enumerable.Repeat(4, 1))))).ToList();
 
-            return pool[_randomGenerator.Next(0, 16)];
+            return poolOfPossibleOutcomes[_randomGenerator.Next(0, 16)];
         }
 
     }

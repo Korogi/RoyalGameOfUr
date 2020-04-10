@@ -1,37 +1,50 @@
-﻿using RoyalGameOfUr.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using RoyalGameOfUr.Common;
 using RoyalGameOfUr.Common.Packets;
-using System.Linq;
-using RoyalGameOfUr.Common.Exceptions;
 
-namespace RoyalGameOfUr.Server
+
+
+namespace RoyalGameOfUr.Client
 {
-    public class Client : ClientBase
+    class GameClient : ClientBase
     {
         //public static int dataBufferSize = 4096;
-        //public readonly int Id;
-        //public TcpClient Socket;
+        //public string ServerIp = "127.0.0.1";
+        //public int ServerPort = 13000;
 
-        //private NetworkStream stream;
-        //private byte[] receiveBuffer;
+        //public int localId;
+        //public TcpClient socket;
+        //public NetworkStream stream;
+        //public byte[] receiveBuffer;
         //private PacketBuffer receivedPacketBuffer;
-        //public Client(int id)
-        //    => (Id, receivedPacketBuffer) = (id, new PacketBuffer());
 
-        //public void Connect(TcpClient socket)
+        //public GameClient()
+        //    => receivedPacketBuffer = new PacketBuffer();
+
+        //public void ConnectToServer()
         //{
-        //    Socket = socket;
-        //    socket.ReceiveBufferSize = dataBufferSize;
-        //    socket.SendBufferSize = dataBufferSize;
-
-        //    stream = socket.GetStream();
+        //    socket = new TcpClient
+        //    {
+        //        ReceiveBufferSize = dataBufferSize,
+        //        SendBufferSize = dataBufferSize,
+        //    };
 
         //    receiveBuffer = new byte[dataBufferSize];
+        //    socket.BeginConnect(ServerIp, ServerPort, ConnectCallback, socket);
+        //}
 
+        //private void ConnectCallback(IAsyncResult result)
+        //{
+        //    socket.EndConnect(result);
+        //    if (!socket.Connected) return;
+
+        //    stream = socket.GetStream();
         //    stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         //}
 
@@ -54,7 +67,7 @@ namespace RoyalGameOfUr.Server
         //    }
         //    catch (Exception ex)
         //    {
-        //        Console.WriteLine($"Error receiving data with client id {Id}: {ex}");
+        //        Console.WriteLine($"Error receiving data: {ex}");
         //        // TODO: disconnect 
         //    }
         //}
@@ -68,14 +81,13 @@ namespace RoyalGameOfUr.Server
         //    }
         //    catch (Exception ex)
         //    {
-        //        Console.WriteLine($"Unexpected Error while trying to send data to client {Id}: {ex}");
+        //        Console.WriteLine($"Unexpected Error while trying to send data to server: {ex}");
         //    }
         //}
 
         //private void SendCallback(IAsyncResult result)
         //{
         //    // nothing to do here for now
-        //    // maybe log what has been sent 
         //}
 
         //private void HandleReceivedData(byte[] data)
@@ -96,19 +108,45 @@ namespace RoyalGameOfUr.Server
         //            HandlePacket(PacketHandler.Deserialize(receivedPacketBuffer.CurrentPacket));
         //            receivedPacketBuffer.ResetBuffer();
         //        }
-        //    } 
+        //    }
         //    else
         //    {
         //        receivedPacketBuffer.WriteAllAvailableDataInPacketBuffer();
         //    }
+
         //}
-        public Client(int id) : base(id) { }
+        public string ServerIp = "127.0.0.1";
+        public int ServerPort = 13000;
+
+        public GameClient(int id) : base(id) { }
+
+        public void ConnectToServer()
+        {
+            Socket = new TcpClient
+            {
+                ReceiveBufferSize = dataBufferSize,
+                SendBufferSize = dataBufferSize,
+            };
+
+            ReceiveBuffer = new byte[dataBufferSize];
+            Socket.BeginConnect(ServerIp, ServerPort, ConnectCallback, Socket);
+        }
+
+        private void ConnectCallback(IAsyncResult result)
+        {
+            Socket.EndConnect(result);
+            if (!Socket.Connected) return;
+
+            Stream = Socket.GetStream();
+            Stream.BeginRead(ReceiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+        }
+
         public override void HandlePacket(object packet)
         {
             if (packet is TestPacket)
                 Console.WriteLine(packet.ToString());
             else
-                throw new UnknownPacketTypeException($"Packet couldn't be recognized as any valid packet object.");
+                Console.WriteLine("Couldn't recognize packet");
         }
     }
 }
