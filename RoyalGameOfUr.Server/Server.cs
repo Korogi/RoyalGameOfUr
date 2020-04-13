@@ -6,10 +6,10 @@ using System.Net.Sockets;
 
 namespace RoyalGameOfUr.Server
 {
-    class Server
+    public class Server
     {
         public int MaxPlayers { get; private set; }
-        public  int MaxGames { get; private set; }
+        // public  int MaxGames { get; private set; }
 
         public int Port { get; private set; }
 
@@ -17,8 +17,8 @@ namespace RoyalGameOfUr.Server
 
         private readonly TcpListener Listener;
 
-        public Server(int maxPlayers, int maxGames, int port)
-            => (MaxPlayers, MaxGames, Port, Listener) = (maxPlayers, maxGames, port, new TcpListener(IPAddress.Any, port));
+        public Server(int maxPlayers,  int port)
+            => (MaxPlayers, Port, Listener) = (maxPlayers, port, new TcpListener(IPAddress.Any, port));
 
         public void Start()
         {
@@ -41,6 +41,7 @@ namespace RoyalGameOfUr.Server
                 if (clients[i].Socket is null)
                 {
                     clients[i].Connect(client);
+                    Console.WriteLine($"Client {client.Client.RemoteEndPoint} got ID: {i}");
                     return;
                 }
             }

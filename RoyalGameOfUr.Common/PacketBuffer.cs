@@ -8,49 +8,35 @@ namespace RoyalGameOfUr.Common
 {
     public class PacketBuffer
     { 
-        private List<byte> buffer;
+        private readonly List<byte> Buffer;
         public int CurrentPositionRead { get; set; }
 
         public byte[] CurrentPacket { get; private set; }
         public int CurrentPacketLength { get; private set; }
         public int CurrentPacketPosition { get; set; }
 
-        //public PacketBuffer(int length)
-        //    => (PacketLength, buffer) = (length, new List<byte>);
-
-        //public PacketBuffer(int length, byte[] data)
-        //{
-        //    if (length > data.Length)
-        //        throw new PacketBufferException($"PacketBuffer overflow: packet length is {length} but data length is {data.Length}");
-           
-            
-        //}
-
         public PacketBuffer()
         {
-            buffer = new List<byte>();
+            Buffer = new List<byte>();
 
         }
-
+        public bool IsPacketSet()
+            => !(CurrentPacket is null);
         public bool IsCurrentPacketComplete()
             => CurrentPacketPosition == CurrentPacketLength;
 
-
         public int UnreadDataInBufferLength()
-            => buffer.Count - CurrentPositionRead;
+            => Buffer.Count - CurrentPositionRead;
 
         public int MissingDataFromPacketLength()
             => CurrentPacketLength - CurrentPacketPosition;
 
         public void WriteDataInBuffer(byte[] data)
-            => buffer.AddRange(data);
-
-        public bool IsPacketSet()
-            => !(CurrentPacket is null);
+            => Buffer.AddRange(data);
 
         public void SetNewPacketBuffer()
         {
-            CurrentPacketLength = PacketHandler.ReadPrefixLength(buffer.ToArray());
+            CurrentPacketLength = PacketHandler.ReadPrefixLength(Buffer.ToArray());
             CurrentPositionRead += sizeof(short);
             CurrentPacketPosition = 0;
             CurrentPacket = new byte[CurrentPacketLength];
@@ -64,13 +50,13 @@ namespace RoyalGameOfUr.Common
             if (UnreadDataInBufferLength() < MissingDataFromPacketLength())
             {
                 
-                Array.Copy(buffer.ToArray(), CurrentPositionRead, CurrentPacket, CurrentPacketPosition, UnreadDataInBufferLength()); // need to adjust length 
+                Array.Copy(Buffer.ToArray(), CurrentPositionRead, CurrentPacket, CurrentPacketPosition, UnreadDataInBufferLength()); 
                 CurrentPacketPosition += UnreadDataInBufferLength(); 
                 CurrentPositionRead += UnreadDataInBufferLength();
                 
             } else
             {
-                Array.Copy(buffer.ToArray(), CurrentPositionRead, CurrentPacket, CurrentPacketPosition, MissingDataFromPacketLength());
+                Array.Copy(Buffer.ToArray(), CurrentPositionRead, CurrentPacket, CurrentPacketPosition, MissingDataFromPacketLength());
                 CurrentPositionRead += CurrentPacketLength;
                 CurrentPacketPosition = CurrentPacketLength;
             }
@@ -78,7 +64,7 @@ namespace RoyalGameOfUr.Common
 
         public void ResetBuffer()
         {
-            buffer.RemoveRange(0, CurrentPacketLength);
+            Buffer.RemoveRange(0, CurrentPacketLength + sizeof(short));
             CurrentPacket = null;
             CurrentPositionRead = 0;
             CurrentPacketPosition = 0;

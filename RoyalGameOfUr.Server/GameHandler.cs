@@ -7,11 +7,10 @@ using System.Text;
 
 namespace RoyalGameOfUr.Server
 {
-    class GameHandler
+    public class GameHandler
     {
         public Game Game { get; private set; }
-        
-
+       
         private readonly Random _randomGenerator = new Random();
         public GameHandler(Game game)
             => Game = game;

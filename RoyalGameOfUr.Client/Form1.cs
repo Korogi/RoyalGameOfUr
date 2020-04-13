@@ -27,8 +27,13 @@ namespace RoyalGameOfUr.Client
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            client.SendData(new TestPacket(12, "my name is a very long name", Enumerable.Range(0, 256).ToList()));
+            client.SendData(new TestPacket(12, "my name is a very long name", Enumerable.Range(0, 1024).ToList()));
             
+        }
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+            client.Disconnect();
         }
     }
 }

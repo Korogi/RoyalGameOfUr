@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Linq;
 
 namespace RoyalGameOfUr.Common
 {
@@ -43,7 +44,7 @@ namespace RoyalGameOfUr.Common
                 int byteLength = Stream.EndRead(result);
                 if (byteLength <= 0)
                 {
-                    // TODO: disconncet
+                    Disconnect();
                     return;
                 }
 
@@ -56,7 +57,7 @@ namespace RoyalGameOfUr.Common
             catch (Exception ex)
             {
                 Console.WriteLine($"Error receiving data with client id {Id}: {ex}");
-                // TODO: disconnect 
+                Disconnect();
             }
         }
 
@@ -94,6 +95,8 @@ namespace RoyalGameOfUr.Common
 
                 if (ReceivedPacketBuffer.IsCurrentPacketComplete())
                 {
+                    //Console.WriteLine(string.Join(" ",
+                    //                    ReceivedPacketBuffer.CurrentPacket.Select(x => Convert.ToString(x, 2).PadLeft(8, '0'))));
                     HandlePacket(PacketHandler.Deserialize(ReceivedPacketBuffer.CurrentPacket));
                     ReceivedPacketBuffer.ResetBuffer();
                 }
@@ -104,6 +107,7 @@ namespace RoyalGameOfUr.Common
             }
         }
 
+        public abstract void Disconnect();
         public abstract void HandlePacket(object packet);
     }
 }

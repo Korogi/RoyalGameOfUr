@@ -6,7 +6,7 @@ namespace RoyalGameOfUr.Server
     {
         static void Main(string[] args)
         {
-            Server server = new Server(16, 16, 13000);
+            Server server = new Server(16, 13000);
             server.Start();
             Console.ReadKey();
         }
