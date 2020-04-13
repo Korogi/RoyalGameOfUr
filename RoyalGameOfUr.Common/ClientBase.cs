@@ -13,16 +13,19 @@ namespace RoyalGameOfUr.Common
         //public override bool Equals(object obj) => obj is ClientBase client && Username == client.Username;
 
         //public override int GetHashCode() => Username.GetHashCode();
-        
+
         public static int dataBufferSize = 4096;
         public readonly int Id;
         public TcpClient Socket { get; set; }
 
         public NetworkStream Stream { get; set; }
-        public  byte[] ReceiveBuffer { get; set; }
-        public  PacketBuffer ReceivedPacketBuffer { get; set; }
-        public ClientBase(int id)
-            => (Id, ReceivedPacketBuffer) = (id, new PacketBuffer());
+        public byte[] ReceiveBuffer { get; set; }
+        public PacketBuffer ReceivedPacketBuffer { get; set; }
+
+        private Action<object>? _handlePacketHook { get; set; }
+
+        public ClientBase(int id, Action<object>? handlePacketHook = null)
+            => (Id, ReceivedPacketBuffer, _handlePacketHook) = (id, new PacketBuffer(), handlePacketHook);
 
         public void Connect(TcpClient socket)
         {
@@ -95,9 +98,10 @@ namespace RoyalGameOfUr.Common
 
                 if (ReceivedPacketBuffer.IsCurrentPacketComplete())
                 {
-                    //Console.WriteLine(string.Join(" ",
-                    //                    ReceivedPacketBuffer.CurrentPacket.Select(x => Convert.ToString(x, 2).PadLeft(8, '0'))));
-                    HandlePacket(PacketHandler.Deserialize(ReceivedPacketBuffer.CurrentPacket));
+                    var packet = PacketHandler.Deserialize(ReceivedPacketBuffer.CurrentPacket);
+                    HandlePacket(packet);
+                    _handlePacketHook?.Invoke(packet);
+
                     ReceivedPacketBuffer.ResetBuffer();
                 }
             }

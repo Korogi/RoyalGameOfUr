@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using RoyalGameOfUr.Common.Packets;
 
 namespace RoyalGameOfUr.Server
 {
@@ -17,7 +18,7 @@ namespace RoyalGameOfUr.Server
 
         private readonly TcpListener Listener;
 
-        public Server(int maxPlayers,  int port)
+        public Server(int maxPlayers, int port)
             => (MaxPlayers, Port, Listener) = (maxPlayers, port, new TcpListener(IPAddress.Any, port));
 
         public void Start()
@@ -54,11 +55,12 @@ namespace RoyalGameOfUr.Server
         {
             for (int i = 0; i < MaxPlayers; i++)
             {
-                clients.Add(i, new Client(i));
+                clients.Add(i, new Client(i, HandlePacket));
             }
-
         }
 
-       
+        private void HandlePacket(object data)
+        {
+        }
     }
 }

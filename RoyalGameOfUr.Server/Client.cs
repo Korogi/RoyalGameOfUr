@@ -12,15 +12,13 @@ namespace RoyalGameOfUr.Server
 {
     public class Client : ClientBase
     {
-        // public Server ConnectedServer { get; set; }
-        public Client(int id) : base(id) { }
+        public Client(int id, Action<object> handlePacketHook = null) : base(id, handlePacketHook)
+        {
+        }
+
         public override void HandlePacket(object packet)
         {
-            if (packet is TestPacket)
-                Console.WriteLine(packet.ToString());
-                
-            else
-                throw new UnknownPacketTypeException($"Packet couldn't be recognized as any valid packet object.");
+
         }
 
         public override void Disconnect()
